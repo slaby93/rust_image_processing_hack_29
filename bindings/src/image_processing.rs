@@ -1,4 +1,6 @@
-use image::DynamicImage;
+use image::{DynamicImage, FilterType, GenericImageView};
+
+const PIXELLATE_SIZE: u32 = 8;
 
 pub fn flip_horizontally(img: DynamicImage) -> DynamicImage {
     let filtered = img.fliph();
@@ -22,7 +24,10 @@ pub fn grayscale(img: DynamicImage) -> DynamicImage {
 }
 
 pub fn pixellate(img: DynamicImage) -> DynamicImage {
-    let rgbImage = img.to_rgb();
-
-    img
+    let subsampled = img.resize(
+        img.width() / PIXELLATE_SIZE,
+        img.height() / PIXELLATE_SIZE,
+        FilterType::Triangle,
+    );
+    subsampled.resize(img.width(), img.height(), FilterType::Nearest)
 }
