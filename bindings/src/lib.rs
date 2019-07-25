@@ -10,19 +10,6 @@ use wasm_bindgen::prelude::*;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[wasm_bindgen]
-extern {
-    fn alert(s: &str);
-}
-
-#[wasm_bindgen]
-pub fn greet(text: &str) {
-    let text_to_display = format!("Your input: {}", text);
-    alert(&text_to_display);
-}
-
-const IMAGE_PREFIX: &str = "data:image/png;base64,";
-
-#[wasm_bindgen]
 pub fn load_image(image_base_64: &str) -> String {
     utils::set_panic_hook();
     let decoded_base64: Vec<u8> = base64::decode(image_base_64).unwrap();
@@ -40,7 +27,5 @@ pub fn load_image(image_base_64: &str) -> String {
         .expect("Unable to write");
     
     let encoded_base64 = base64::encode(&buf);
-
-    // alert(&format!("X: {:?}", encoded_base64.len()));
     encoded_base64
 }
