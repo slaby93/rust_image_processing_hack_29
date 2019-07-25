@@ -43,17 +43,17 @@ pub fn add_watermark(
 
     for x in 0..width {
         for y in 0..height {
-            let yelp_pixel = watermark_buffer.get_pixel(x, y);
+            let watermark_pixel = watermark_buffer.get_pixel(x, y);
 
-            let yelp_alpha = yelp_pixel[3];
-            let is_opaque = yelp_alpha != 0;
+            let watermark_alpha = watermark_pixel[3];
+            let is_opaque = watermark_alpha != 0;
 
             if is_opaque {
                 let mut new_pixel = *img_buffer.get_pixel(x, y);
 
                 for channel in 0..3 {
                     new_pixel[channel] = (
-                        (new_pixel[channel] as f32) * transparency + (yelp_pixel[channel] as f32) * (1.0 - transparency)
+                        (new_pixel[channel] as f32) * transparency + (watermark_pixel[channel] as f32) * (1.0 - transparency)
                     ) as u8;
                 }
 
