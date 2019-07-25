@@ -1,4 +1,7 @@
-use image::{GenericImageView, DynamicImage, ImageBuffer, Rgba, ImageRgba8};
+use image::{GenericImageView, DynamicImage, ImageBuffer, Rgba, ImageRgba8, FilterType};
+
+const PIXELLATE_SIZE: u32 = 8;
+
 
 pub fn flip_horizontally(img: DynamicImage) -> DynamicImage {
     let filtered = img.fliph();
@@ -22,9 +25,23 @@ pub fn grayscale(img: DynamicImage) -> DynamicImage {
 }
 
 pub fn pixellate(img: DynamicImage) -> DynamicImage {
-    let rgbImage = img.to_rgb();
+    let subsampled = img.resize(
+        img.width() / PIXELLATE_SIZE,
+        img.height() / PIXELLATE_SIZE,
+        FilterType::Triangle,
+    );
+    subsampled.resize(img.width(), img.height(), FilterType::Nearest)
+}
 
-    img
+pub fn rotate_right(img: DynamicImage) -> DynamicImage {
+    let filtered = img.rotate90();
+    filtered
+}
+
+
+pub fn rotate_left(img: DynamicImage) -> DynamicImage {
+    let filtered = img.rotate270();
+    filtered
 }
 
 
