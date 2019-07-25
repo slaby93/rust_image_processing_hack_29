@@ -18,7 +18,7 @@ pub fn load_image(image_base_64: &str) -> String {
         .ok()
         .expect("Opening image failed");
     
-    let grayscaled_image = image_processing::grayscale(image);
+    let grayscaled_image = image_processing::pixellate(image);
 
     let mut buf = Vec::new();
 
