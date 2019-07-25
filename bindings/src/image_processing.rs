@@ -31,3 +31,14 @@ pub fn pixellate(img: DynamicImage) -> DynamicImage {
     );
     subsampled.resize(img.width(), img.height(), FilterType::Nearest)
 }
+
+pub fn rotate_right(img: DynamicImage) -> DynamicImage {
+    let filtered = img.rotate90();
+    filtered
+}
+
+
+pub fn rotate_left(img: DynamicImage) -> DynamicImage {
+    let filtered = img.rotate270();
+    filtered
+}
