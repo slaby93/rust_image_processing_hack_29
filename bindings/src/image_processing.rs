@@ -1,6 +1,4 @@
-use std::path::Path;
 use image::DynamicImage;
-use rand::Rng;
 
 pub fn flip_horizontally(img: DynamicImage) -> DynamicImage {
     let filtered = img.fliph();
@@ -13,11 +11,17 @@ pub fn flip_vertically(img: DynamicImage) -> DynamicImage {
 }
 
 pub fn invert(img: DynamicImage) -> DynamicImage {
-    img.invert();
-    img
+   img.invert();
+   img
 }
 
 pub fn grayscale(img: DynamicImage) -> DynamicImage {
     let filtered = img.grayscale();
     filtered
+}
+
+pub fn pixellate(img: DynamicImage) -> DynamicImage {
+    let rgbImage = img.to_rgb();
+
+    img
 }

@@ -1,4 +1,5 @@
 mod utils;
+mod image_processing;
 extern crate base64;
 extern crate image;
 use wasm_bindgen::prelude::*;
@@ -17,8 +18,7 @@ pub fn load_image(image_base_64: &str) -> String {
         .ok()
         .expect("Opening image failed");
     
-    let grayscaled_image = image.grayscale();
-
+    let grayscaled_image = image_processing::grayscale(image);
 
     let mut buf = Vec::new();
 
