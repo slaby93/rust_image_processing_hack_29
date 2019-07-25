@@ -7,16 +7,6 @@ import Base64 from './utils/Base64'
 import { faUndo, faCameraRetro } from '@fortawesome/free-solid-svg-icons'
 import './App.css'
 
-let wasm
-
-(async () => {
-  try {
-    wasm = await import('bindings');
-  } finally {
-    console.log('Loaded')
-  }
-})()
-
 export default class App extends Component {
   state = {
     uploading: false,
@@ -57,6 +47,7 @@ export default class App extends Component {
   }
 
   render() {
+    const { wasm } = this.props
     const { uploading, images } = this.state
     const content = () => {
       switch(true) {
