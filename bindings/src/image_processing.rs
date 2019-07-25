@@ -42,3 +42,15 @@ pub fn rotate_left(img: DynamicImage) -> DynamicImage {
     let filtered = img.rotate270();
     filtered
 }
+
+pub fn best_fit_resize(img: DynamicImage, width: u32, height: u32) -> DynamicImage {
+    // preserve the aspect ratio while scaling to the maximum possible size that fits within bounds specified by width and height.
+    let filtered = img.resize(width, height, FilterType::Lanczos3);
+    filtered
+}
+
+
+pub fn exact_resize(img: DynamicImage, width: u32, height: u32) -> DynamicImage {
+    let filtered = img.resize_exact(width, height, FilterType::Lanczos3);
+    filtered
+}
