@@ -2,17 +2,20 @@ import React, { Component } from 'react'
 import Spinner from './components/Spinner'
 import Images from './components/Images'
 import Buttons from './components/Buttons'
+import Transforms from './components/Transforms'
+import Base64 from './utils/Base64'
+import { faUndo, faCameraRetro } from '@fortawesome/free-solid-svg-icons'
 import './App.css'
 
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <Spinner />
-//       </header>
-//     </div>
-//   );
-// }
+let wasm
+
+(async () => {
+  try {
+    wasm = await import('bindings');
+  } finally {
+    console.log('Loaded')
+  }
+})()
 
 export default class App extends Component {
   state = {
@@ -24,6 +27,12 @@ export default class App extends Component {
     const files = Array.from(e.target.files)
     this.setState({ uploading: true })
     
+    console.log(Base64.toBase64(files[0], result => {
+      console.log(result)
+    }, error => {
+      console.e(error)
+    }))
+
     setTimeout(() => {
       let images = files.map(file => {
         return {
@@ -60,12 +69,26 @@ export default class App extends Component {
       }
     }
 
+    const transforms = [
+      {
+        icon: faUndo,
+        title: 'Rotate',
+        onClick: () => { wasm.greet("YOYOYO") }
+      },
+      {
+        icon: faCameraRetro,
+        title: 'Grayscale',
+        onClick: () => { console.log("Done") }
+      }
+    ]
+
     return (
       <div className="App">
         <header className="App-header">
           <div className='buttons'>
             {content()}
           </div>
+          <Transforms transforms={transforms} />
         </header>
       </div>
     )

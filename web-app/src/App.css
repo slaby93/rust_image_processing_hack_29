@@ -243,3 +243,25 @@ footer .small-button.medium {
   }
 }
 
+.transform {
+  background-color: white;
+  display: flex;
+  width: 80px;
+  height: 80px;
+  border-radius: 50px;
+  align-items: center;
+  justify-content: center;
+  margin: 8px;
+}
+
+.transformContainer {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+}
+
+.transformItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
