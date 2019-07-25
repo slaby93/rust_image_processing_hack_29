@@ -11,8 +11,9 @@ pub fn flip_vertically(img: DynamicImage) -> DynamicImage {
 }
 
 pub fn invert(img: DynamicImage) -> DynamicImage {
-   img.invert();
-   img
+    let mut cloned_img = img.clone();
+    cloned_img.invert();
+    cloned_img
 }
 
 pub fn grayscale(img: DynamicImage) -> DynamicImage {
