@@ -12,6 +12,7 @@ const App = ({ wasm }) => {
   const onUpload = useCallback(async ({ target: { files: [ file ] }}) => {
     setUploading(true)
     const parsedBase64File = await file_to_base64(file)
+    console.log({ parsedBase64File })
     setImageBase64(parsedBase64File)
     setUploading(false)
   })
