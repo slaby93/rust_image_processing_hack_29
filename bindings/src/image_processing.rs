@@ -26,3 +26,14 @@ pub fn pixellate(img: DynamicImage) -> DynamicImage {
 
     img
 }
+
+pub fn rotate_right(img: DynamicImage) -> DynamicImage {
+    let filtered = img.rotate90();
+    filtered
+}
+
+
+pub fn rotate_left(img: DynamicImage) -> DynamicImage {
+    let filtered = img.rotate270();
+    filtered
+}
