@@ -55,7 +55,7 @@ pub fn best_fit_resize(img: DynamicImage, width: u32, height: u32) -> DynamicIma
 pub fn exact_resize(img: DynamicImage, width: u32, height: u32) -> DynamicImage {
     let filtered = img.resize_exact(width, height, FilterType::Lanczos3);
     filtered
-
+}
 
 pub fn add_watermark(
     original_img: &DynamicImage,
