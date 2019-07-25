@@ -5,8 +5,17 @@ import Buttons from './components/Buttons'
 import Transforms from './components/Transforms'
 import Base64 from './utils/Base64'
 import { faUndo, faCameraRetro } from '@fortawesome/free-solid-svg-icons'
-import * as bindings from 'wasm-bindings'
 import './App.css'
+
+let wasm
+
+(async () => {
+  try {
+    wasm = await import('bindings');
+  } finally {
+    console.log('Loaded')
+  }
+})()
 
 export default class App extends Component {
   state = {
@@ -64,7 +73,7 @@ export default class App extends Component {
       {
         icon: faUndo,
         title: 'Rotate',
-        onClick: () => {  }
+        onClick: () => { wasm.greet() }
       },
       {
         icon: faCameraRetro,
