@@ -73,7 +73,7 @@ export default class App extends Component {
       {
         icon: faUndo,
         title: 'Rotate',
-        onClick: () => { wasm.greet() }
+        onClick: () => { wasm.greet("YOYOYO") }
       },
       {
         icon: faCameraRetro,
