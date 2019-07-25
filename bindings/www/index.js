@@ -1,3 +1,7 @@
 import * as wasm from "wasm-bindings";
 
-wasm.greet();
+document.getElementById("submit-me")
+    .addEventListener("click", () => {
+        const text = document.getElementById("test").value
+        wasm.greet(text);
+    })

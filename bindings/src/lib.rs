@@ -14,6 +14,7 @@ extern {
 }
 
 #[wasm_bindgen]
-pub fn greet() {
-    alert("Hello, Yelp bindings!");
+pub fn greet(text: &str) {
+    let text_to_display = format!("Your input: {}", text);
+    alert(&text_to_display);
 }
