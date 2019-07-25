@@ -23,7 +23,7 @@ pub fn greet(text: &str) {
 const IMAGE_PREFIX: &str = "data:image/png;base64,";
 
 #[wasm_bindgen]
-pub fn load_image(image_base_64: &str) {
+pub fn load_image(image_base_64: &str) -> String {
     utils::set_panic_hook();
     let decoded_base64: Vec<u8> = base64::decode(image_base_64).unwrap();
     let image: image::DynamicImage = image::load_from_memory_with_format(&decoded_base64, image::PNG)
@@ -31,7 +31,16 @@ pub fn load_image(image_base_64: &str) {
         .expect("Opening image failed");
     
     let grayscaled_image = image.grayscale();
-    // let encoded_base64 = base64::encode(&grayscaled_image).unwrap();
 
-    alert(&format!("X: {:?}", decoded_base64.len()));
+
+    let mut buf = Vec::new();
+
+    grayscaled_image
+        .write_to(&mut buf, image::ImageOutputFormat::PNG)
+        .expect("Unable to write");
+    
+    let encoded_base64 = base64::encode(&buf);
+
+    // alert(&format!("X: {:?}", encoded_base64.len()));
+    encoded_base64
 }
