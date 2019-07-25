@@ -1,7 +1,12 @@
+use std::fs;
+
 mod image_processing;
 
 fn main(){
     let img = image::open("sample/fuji.jpg").unwrap();
+    let watermark = image::open("sample/watermark.png").unwrap();
 
-    image_processing::grayscale(img).save("output.png");
+    fs::create_dir_all("outputs");
+    image_processing::grayscale(&img).save("outputs/grayscale.png");
+    image_processing::add_watermark(&img, &watermark, 0.5).save("outputs/fuji_and_watermark.png");
 }

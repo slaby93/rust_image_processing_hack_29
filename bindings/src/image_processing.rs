@@ -3,28 +3,28 @@ use image::{GenericImageView, DynamicImage, ImageBuffer, Rgba, ImageRgba8, Filte
 const PIXELLATE_SIZE: u32 = 8;
 
 
-pub fn flip_horizontally(img: DynamicImage) -> DynamicImage {
+pub fn flip_horizontally(img: &DynamicImage) -> DynamicImage {
     let filtered = img.fliph();
     filtered
 }
 
-pub fn flip_vertically(img: DynamicImage) -> DynamicImage {
+pub fn flip_vertically(img: &DynamicImage) -> DynamicImage {
     let filtered = img.flipv();
     filtered
 }
 
-pub fn invert(img: DynamicImage) -> DynamicImage {
+pub fn invert(img: &DynamicImage) -> DynamicImage {
     let mut cloned_img = img.clone();
     cloned_img.invert();
     cloned_img
 }
 
-pub fn grayscale(img: DynamicImage) -> DynamicImage {
+pub fn grayscale(img: &DynamicImage) -> DynamicImage {
     let filtered = img.grayscale();
     filtered
 }
 
-pub fn pixellate(img: DynamicImage) -> DynamicImage {
+pub fn pixellate(img: &DynamicImage) -> DynamicImage {
     let subsampled = img.resize(
         img.width() / PIXELLATE_SIZE,
         img.height() / PIXELLATE_SIZE,
@@ -39,15 +39,15 @@ pub fn rotate_right(img: DynamicImage) -> DynamicImage {
 }
 
 
-pub fn rotate_left(img: DynamicImage) -> DynamicImage {
+pub fn rotate_left(img: &DynamicImage) -> DynamicImage {
     let filtered = img.rotate270();
     filtered
 }
 
 
 pub fn add_watermark(
-    original_img: DynamicImage,
-    watermark_img: DynamicImage,
+    original_img: &DynamicImage,
+    watermark_img: &DynamicImage,
     transparency: f32
 ) -> DynamicImage {
     // adds watermark in top left corner
