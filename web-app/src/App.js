@@ -32,7 +32,7 @@ const App = ({ wasm }) => {
           <UploadImageForm onUpload={onUpload} />
         )}
         {imageBase64 && (
-          <div className='buttons'>
+          <div className='main-content'>
             <ImageDisplay imageBase64={imageBase64} />
             <ActionBar transformImage={onImageTransform} />
           </div>

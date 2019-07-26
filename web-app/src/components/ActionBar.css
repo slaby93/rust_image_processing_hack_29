@@ -1,0 +1,16 @@
+.ActionBar {
+    display: flex;
+    flex-direction: column;
+    margin-left: 15px;
+}
+
+.ActionBar > button {
+    width: 200px;
+    height: 40px;
+    color: #fff;
+    background: #d32323;
+    border: 1px solid #d32323;
+    font-size: 16px;
+    margin-bottom: 2px;
+    cursor: pointer;
+}
