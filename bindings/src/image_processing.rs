@@ -1,6 +1,6 @@
 extern crate rand;
 
-use image::{DynamicImage, FilterType, GenericImageView, ImageBuffer, ImageRgba8, Rgba};
+use image::{DynamicImage, FilterType, GenericImageView, ImageBuffer, ImageRgba8, Pixel, Rgba};
 use rand::distributions::{Distribution, Normal};
 
 const PIXELLATE_SIZE: u32 = 8;
@@ -88,17 +88,17 @@ pub fn add_watermark(
             let watermark_pixel = watermark_buffer.get_pixel(x, y);
 
             let watermark_alpha = watermark_pixel[3];
+            let adjusted_watermark_pixel = image::Rgba([
+                watermark_pixel[0],
+                watermark_pixel[1],
+                watermark_pixel[2],
+                (watermark_pixel[3] as f32 * transparency) as u8,
+            ]);
             let is_opaque = watermark_alpha != 0;
 
             if is_opaque {
                 let mut new_pixel = *img_buffer.get_pixel(x, y);
-
-                for channel in 0..3 {
-                    new_pixel[channel] = ((new_pixel[channel] as f32) * transparency
-                        + (watermark_pixel[channel] as f32) * (1.0 - transparency))
-                        as u8;
-                }
-
+                new_pixel.blend(&adjusted_watermark_pixel);
                 img_buffer.put_pixel(x, y, new_pixel);
             }
         }
