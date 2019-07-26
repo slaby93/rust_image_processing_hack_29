@@ -113,3 +113,64 @@ pub fn add_noise(img: &DynamicImage) -> DynamicImage {
     }
     ImageRgba8(noisy)
 }
+
+pub fn enhance_edges(img: &DynamicImage) -> DynamicImage {
+    let mut kernel = [-1.0f32, -1.0, -1.0,
+              -1.0, 10.0, -1.0,
+              -1.0, -1.0, -1.0];
+    let scale = 2.0;
+    let offset = 0.0;
+    scale_kernel(&mut kernel, scale, offset);
+    let filtered = img.filter3x3(&kernel);
+    filtered
+}
+
+pub fn detail(img: &DynamicImage) -> DynamicImage {
+    let mut kernel = [0.0f32, -1.0, 0.0,
+              -1.0, 10.0, -1.0,
+              0.0, -1.0, 0.0];
+    let scale = 6.0;
+    let offset = 0.0;
+    scale_kernel(&mut kernel, scale, offset);
+    let filtered = img.filter3x3(&kernel);
+    filtered
+}
+
+pub fn emboss(img: &DynamicImage) -> DynamicImage {
+    let mut kernel = [-1.0f32, 0.0, 0.0,
+              0.0, 1.0, 0.0,
+              0.0, 0.0, 0.0];
+    let scale = 1.0;
+    let offset = 128.0;
+    scale_kernel(&mut kernel, scale, offset);
+    let filtered = img.filter3x3(&kernel);
+    filtered
+}
+
+pub fn smoothen(img: &DynamicImage) -> DynamicImage {
+    let mut kernel = [1.0f32, 1.0, 1.0,
+              1.0, 5.0, 1.0,
+              1.0, 1.0, 1.0];
+    let scale = 13.0;
+    let offset = 0.0;
+    scale_kernel(&mut kernel, scale, offset);
+    let filtered = img.filter3x3(&kernel);
+    filtered
+}
+
+pub fn contour(img: &DynamicImage) -> DynamicImage {
+    let mut kernel = [-1.0f32, -1.0, -1.0,
+              -1.0, 8.0, -1.0,
+              -1.0, -1.0, -1.0];
+    let scale = 1.0;
+    let offset = 255.0;
+    scale_kernel(&mut kernel, scale, offset);
+    let filtered = img.filter3x3(&kernel);
+    filtered
+}
+
+pub fn scale_kernel(kernel: &mut [f32], scale: f32, offset: f32) {
+    for value in kernel.iter_mut() {
+        *value = *value / scale + offset;
+    }
+}
