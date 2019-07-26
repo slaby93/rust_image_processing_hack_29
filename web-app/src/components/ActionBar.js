@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import ACTIONS from './../actions.json'
 import './ActionBar.css'
 
 export default ({ transformImage }) => {
+    const wR = useRef()
+    const wH = useRef()
     return (
         <div className="ActionBar">
             {
@@ -14,6 +16,13 @@ export default ({ transformImage }) => {
                     )
                 })
             }
+            <div className="resize">
+                <input ref={wR}/>
+                <input ref={wH}/>
+                <button onClick={() => transformImage('exact_resize', wR.current.value, wH.current.value)}>
+                    Resize        
+                </button>
+            </div>
         </div>
     )
 }

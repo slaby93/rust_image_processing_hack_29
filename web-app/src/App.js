@@ -19,10 +19,10 @@ const App = ({ wasm }) => {
     setImageBase64(parsedBase64File)
     setUploading(false)
   })
-  const onImageTransform = useCallback(wasm_function_name => {
+  const onImageTransform = useCallback((wasm_function_name, ...args) => {
     setUploading(true)
     const base64 = imageBase64.split(WEB_BASE64_PREFIX_PNG)[1]
-    const newImage = wasm[wasm_function_name](base64)
+    const newImage = wasm[wasm_function_name](base64, ...args)
     setImageBase64(`${WEB_BASE64_PREFIX_PNG}${newImage}`)
     setUploading(false)
   })
