@@ -114,7 +114,6 @@ pub fn add_noise(img: &DynamicImage) -> DynamicImage {
         for y in 0..height {
             let offset = normal.sample(&mut rng) as u8;
             let mut px = *img.get_pixel(x, y);
-            let px = px.map(|v| v + offset);
             noisy.put_pixel(x, y, px);
         }
     }
