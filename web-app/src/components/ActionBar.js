@@ -3,8 +3,10 @@ import ACTIONS from './../actions.json'
 import './ActionBar.css'
 
 export default ({ transformImage }) => {
-    const wR = useRef()
-    const wH = useRef()
+    const wR1 = useRef()
+    const wH2 = useRef()
+    const wR3 = useRef()
+    const wH4 = useRef()
     return (
         <div className="ActionBar">
             {
@@ -17,9 +19,16 @@ export default ({ transformImage }) => {
                 })
             }
             <div className="resize">
-                <input ref={wR}/>
-                <input ref={wH}/>
-                <button onClick={() => transformImage('exact_resize', wR.current.value, wH.current.value)}>
+                <input ref={wR3}/>
+                <input ref={wH4}/>
+                <button onClick={() => transformImage('best_fit_resize', wR3.current.value, wH4.current.value)}>
+                    Best fit resize        
+                </button>
+            </div>
+            <div className="resize">
+                <input ref={wR1}/>
+                <input ref={wH2}/>
+                <button onClick={() => transformImage('exact_resize', wR1.current.value, wH2.current.value)}>
                     Resize        
                 </button>
             </div>
