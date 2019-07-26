@@ -122,3 +122,11 @@ pub fn enhance_edges(img: String) -> String {
     img_to_base_64(&img)
 
 }
+
+#[wasm_bindgen]
+pub fn rotate(img: String, angle: f64,) -> String {
+    let mut img = base_64_to_img(&img);
+    img = image_processing::rotate(&img, angle);
+    img_to_base_64(&img)
+
+}

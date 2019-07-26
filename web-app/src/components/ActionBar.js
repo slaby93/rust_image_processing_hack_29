@@ -7,6 +7,7 @@ export default ({ transformImage }) => {
     const wH2 = useRef()
     const wR3 = useRef()
     const wH4 = useRef()
+    const w5 = useRef()
     return (
         <div className="ActionBar">
             {
@@ -30,6 +31,12 @@ export default ({ transformImage }) => {
                 <input ref={wH2}/>
                 <button onClick={() => transformImage('exact_resize', wR1.current.value, wH2.current.value)}>
                     Resize        
+                </button>
+            </div>
+                <div className="resize">
+                <input ref={w5}/>
+                <button onClick={() => transformImage('rotate', w5.current.value)}>
+                    Rotate
                 </button>
             </div>
         </div>
