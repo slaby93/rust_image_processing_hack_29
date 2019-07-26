@@ -1,6 +1,7 @@
 mod utils;
 extern crate base64;
 extern crate image;
+mod image_processing;
 use wasm_bindgen::prelude::*;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
