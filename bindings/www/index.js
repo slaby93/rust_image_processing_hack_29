@@ -6,9 +6,7 @@ document.getElementById("submit-me")
     .addEventListener("click", () => {
         const image_1 = wasm.load_image(image64)
         const converted_image = `data:image/jpeg;base64,${image_1}`;
-        let img=document.createElement("img");
+        const img =document.createElement("img");
         img.src=converted_image;
         document.body.appendChild(img);
-        // document.getElementById("image_placeholder").src = converted_image;
-        // console.log();
     })

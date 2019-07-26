@@ -1,0 +1,11 @@
+{
+    "grayscale": {
+        "wasm_function_name": "wasm_function"
+    },
+    "invert": {
+        "wasm_function_name": "wasm_function"
+    },
+    "rescale": {
+        "wasm_function_name": "wasm_function"
+    }
+}

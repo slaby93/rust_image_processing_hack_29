@@ -1,5 +1,4 @@
 mod utils;
-mod image_processing;
 extern crate base64;
 extern crate image;
 use wasm_bindgen::prelude::*;
@@ -11,14 +10,23 @@ use wasm_bindgen::prelude::*;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[wasm_bindgen]
+extern {
+    fn alert(s: &str);
+}
+
+const WEB_BASE64_PREFIX_PNG: &str = "data:image/png;base64,";
+const WEB_BASE64_PREFIX_JPEG: &str = "data:image/jpeg;base64,";
+#[wasm_bindgen]
 pub fn load_image(image_base_64: &str) -> String {
     utils::set_panic_hook();
-    let decoded_base64: Vec<u8> = base64::decode(image_base_64).unwrap();
-    let image: image::DynamicImage = image::load_from_memory_with_format(&decoded_base64, image::PNG)
+    let (image_base_64_clear, prefix, extension) = split_base64_prefix(image_base_64);
+    let decoded_base64: Vec<u8> = base64::decode(image_base_64_clear).unwrap();
+    let image: image::DynamicImage = image::load_from_memory_with_format(&decoded_base64, extension)
         .ok()
         .expect("Opening image failed");
     
     let grayscaled_image = image_processing::pixellate(&image);
+
 
     let mut buf = Vec::new();
 
@@ -27,5 +35,17 @@ pub fn load_image(image_base_64: &str) -> String {
         .expect("Unable to write");
     
     let encoded_base64 = base64::encode(&buf);
-    encoded_base64
+     format!("{}{}", String::from(prefix), String::from(encoded_base64))
+}
+
+pub fn split_base64_prefix(base64Image: &str) -> (&str, &str, image::ImageFormat) {
+    if(base64Image.contains(WEB_BASE64_PREFIX_PNG)) {
+      let base64 = base64Image.split(WEB_BASE64_PREFIX_PNG).collect::<Vec<&str>>()[1];
+      return (base64, WEB_BASE64_PREFIX_PNG, image::PNG);
+    } else if (base64Image.contains(WEB_BASE64_PREFIX_JPEG)) {
+      let base64 = base64Image.split(WEB_BASE64_PREFIX_JPEG).collect::<Vec<&str>>()[1];
+      return (base64, WEB_BASE64_PREFIX_JPEG, image::JPEG);
+    } else {
+        return ("", "", image::PNG);
+    }
 }
