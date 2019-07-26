@@ -22,8 +22,20 @@ pub fn invert(img: &DynamicImage) -> DynamicImage {
 }
 
 pub fn grayscale(img: &DynamicImage) -> DynamicImage {
-    let filtered = img.grayscale();
-    filtered
+    let (width, height) = img.dimensions();
+    let original = img.to_rgba();
+    let mut greyscale = img.grayscale().to_rgba();
+
+    for x in 0..width {
+        for y in 0..height {
+            let original_pixel = original.get_pixel(x, y);
+            let mut greyscale_pixel = *greyscale.get_pixel(x, y);
+            greyscale_pixel[3] = original_pixel[3];
+            greyscale.put_pixel(x, y, greyscale_pixel);
+        }
+    }
+
+    ImageRgba8(greyscale)
 }
 
 pub fn pixellate(img: &DynamicImage) -> DynamicImage {
