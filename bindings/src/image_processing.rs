@@ -1,3 +1,6 @@
+extern crate rand;
+
+use rand::distributions::{Normal, Distribution};
 use image::{GenericImageView, DynamicImage, ImageBuffer, Rgba, ImageRgba8, FilterType};
 
 const PIXELLATE_SIZE: u32 = 8;
@@ -91,4 +94,29 @@ pub fn add_watermark(
         }
     }
     ImageRgba8(img_buffer)
+}
+
+pub fn detect_edges(img: &DynamicImage) -> DynamicImage {
+    let kernel = [-1.0f32, -1.0, -1.0,
+              -1.0, 8.0, -1.0,
+              -1.0, -1.0, -1.0];
+    let filtered = img.filter3x3(&kernel);
+    filtered
+}
+
+pub fn add_noise(img: &DynamicImage) -> DynamicImage {
+    let (width, height) = img.dimensions();
+    let mut rng = rand::thread_rng();
+    let normal = Normal::new(50.0, 50.0);
+    let mut noisy = img.brighten(-80).to_rgba();
+    let img = img.to_rgba();
+    for x in 0..width {
+        for y in 0..height {
+            let offset = normal.sample(&mut rng) as u8;
+            let mut px = *img.get_pixel(x, y);
+            let px = px.map(|v| v + offset);
+            noisy.put_pixel(x, y, px);
+        }
+    }
+    ImageRgba8(noisy)
 }
