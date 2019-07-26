@@ -22,5 +22,8 @@
     },
     "rotate_right": {
         "wasm_function_name": "rotate_right"
+    },
+    "enhance_edges": {
+        "wasm_function_name": "enhance_edges"
     }
 }
