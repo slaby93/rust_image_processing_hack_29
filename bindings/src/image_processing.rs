@@ -29,12 +29,12 @@ pub fn grayscale(img: &DynamicImage) -> DynamicImage {
 pub fn pixellate(img: &DynamicImage) -> DynamicImage {
     let width = img.width();
     let height = img.height();
-    let subsampled = img.resize(
+    let subsampled = img.resize_exact(
         width / PIXELLATE_SIZE,
         height / PIXELLATE_SIZE,
         FilterType::Triangle,
     );
-    subsampled.resize(width, height, FilterType::Nearest)
+    subsampled.resize_exact(width, height, FilterType::Nearest)
 }
 
 pub fn rotate_right(img: &DynamicImage) -> DynamicImage {
@@ -117,9 +117,7 @@ pub fn add_noise(img: &DynamicImage) -> DynamicImage {
 }
 
 pub fn enhance_edges(img: &DynamicImage) -> DynamicImage {
-    let mut kernel = [-1.0f32, -1.0, -1.0,
-              -1.0, 10.0, -1.0,
-              -1.0, -1.0, -1.0];
+    let mut kernel = [-1.0f32, -1.0, -1.0, -1.0, 10.0, -1.0, -1.0, -1.0, -1.0];
     let scale = 2.0;
     let offset = 0.0;
     scale_kernel(&mut kernel, scale, offset);
@@ -128,9 +126,7 @@ pub fn enhance_edges(img: &DynamicImage) -> DynamicImage {
 }
 
 pub fn detail(img: &DynamicImage) -> DynamicImage {
-    let mut kernel = [0.0f32, -1.0, 0.0,
-              -1.0, 10.0, -1.0,
-              0.0, -1.0, 0.0];
+    let mut kernel = [0.0f32, -1.0, 0.0, -1.0, 10.0, -1.0, 0.0, -1.0, 0.0];
     let scale = 6.0;
     let offset = 0.0;
     scale_kernel(&mut kernel, scale, offset);
@@ -139,9 +135,7 @@ pub fn detail(img: &DynamicImage) -> DynamicImage {
 }
 
 pub fn emboss(img: &DynamicImage) -> DynamicImage {
-    let mut kernel = [-1.0f32, 0.0, 0.0,
-              0.0, 1.0, 0.0,
-              0.0, 0.0, 0.0];
+    let mut kernel = [-1.0f32, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0];
     let scale = 1.0;
     let offset = 128.0;
     scale_kernel(&mut kernel, scale, offset);
@@ -150,9 +144,7 @@ pub fn emboss(img: &DynamicImage) -> DynamicImage {
 }
 
 pub fn smoothen(img: &DynamicImage) -> DynamicImage {
-    let mut kernel = [1.0f32, 1.0, 1.0,
-              1.0, 5.0, 1.0,
-              1.0, 1.0, 1.0];
+    let mut kernel = [1.0f32, 1.0, 1.0, 1.0, 5.0, 1.0, 1.0, 1.0, 1.0];
     let scale = 13.0;
     let offset = 0.0;
     scale_kernel(&mut kernel, scale, offset);
@@ -161,9 +153,7 @@ pub fn smoothen(img: &DynamicImage) -> DynamicImage {
 }
 
 pub fn contour(img: &DynamicImage) -> DynamicImage {
-    let mut kernel = [-1.0f32, -1.0, -1.0,
-              -1.0, 8.0, -1.0,
-              -1.0, -1.0, -1.0];
+    let mut kernel = [-1.0f32, -1.0, -1.0, -1.0, 8.0, -1.0, -1.0, -1.0, -1.0];
     let scale = 1.0;
     let offset = 255.0;
     scale_kernel(&mut kernel, scale, offset);
