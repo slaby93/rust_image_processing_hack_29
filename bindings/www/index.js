@@ -4,7 +4,7 @@ const image64 = "iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAIAAAAiOjnJAAAKt2lDQ1BJQ0MgUHJ
 
 document.getElementById("submit-me")
     .addEventListener("click", () => {
-        const image_1 = wasm.flip_horizontally(image64);
+        const image_1 = wasm.invert(image64);
 
         const converted_image = `data:image/jpeg;base64,${image_1}`;
         const img =document.createElement("img");
