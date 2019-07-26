@@ -86,7 +86,7 @@ impl Image {
         }
     }
 
-    pub fn flip_h(&self) -> String {
+    pub fn flip_h(&mut self) -> String {
         self.img = image_processing::flip_horizontally(&self.img);
         img_to_base_64(&self.img)
     }
