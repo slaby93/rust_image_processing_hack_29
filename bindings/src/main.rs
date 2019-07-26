@@ -22,4 +22,7 @@ fn main() {
     image_processing::invert(&img)
         .save("outputs/invert.jpg")
         .unwrap();
+    image_processing::pixellate(&img)
+        .save("outputs/pixellate.jpg")
+        .unwrap();
 }

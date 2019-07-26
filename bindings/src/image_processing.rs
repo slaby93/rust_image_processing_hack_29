@@ -27,12 +27,14 @@ pub fn grayscale(img: &DynamicImage) -> DynamicImage {
 }
 
 pub fn pixellate(img: &DynamicImage) -> DynamicImage {
+    let width = img.width();
+    let height = img.height();
     let subsampled = img.resize(
-        img.width() / PIXELLATE_SIZE,
-        img.height() / PIXELLATE_SIZE,
+        width / PIXELLATE_SIZE,
+        height / PIXELLATE_SIZE,
         FilterType::Triangle,
     );
-    subsampled.resize(img.width(), img.height(), FilterType::Nearest)
+    subsampled.resize(width, height, FilterType::Nearest)
 }
 
 pub fn rotate_right(img: &DynamicImage) -> DynamicImage {
