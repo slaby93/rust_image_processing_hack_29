@@ -3,7 +3,7 @@ use std::fs;
 mod image_processing;
 
 fn main() {
-    let img = image::open("sample/fuji.jpg").unwrap();
+    let img = image::open("/Users/apau/Desktop/Klay_Patrick.jpg").unwrap();
     let watermark = image::open("sample/watermark.png").unwrap();
 
     fs::create_dir_all("outputs").unwrap();
@@ -24,5 +24,14 @@ fn main() {
         .unwrap();
     image_processing::pixellate(&img)
         .save("outputs/pixellate.jpg")
+        .unwrap();
+    image_processing::enhance_edges(&img)
+        .save("outputs/enhance_edges.jpg")
+        .unwrap();
+    image_processing::detail(&img)
+        .save("outputs/detail.jpg")
+        .unwrap();
+    image_processing::blur(&img)
+        .save("outputs/blur.jpg")
         .unwrap();
 }

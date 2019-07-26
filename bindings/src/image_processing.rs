@@ -142,34 +142,22 @@ pub fn detail(img: &DynamicImage) -> DynamicImage {
     let scale = 6.0;
     let offset = 0.0;
     scale_kernel(&mut kernel, scale, offset);
-    let filtered = img.filter3x3(&kernel);
+    let mut filtered = img.filter3x3(&kernel);
+    for x in 0..3 {
+        filtered = filtered.filter3x3(&kernel);
+    }
     filtered
 }
 
-pub fn emboss(img: &DynamicImage) -> DynamicImage {
-    let mut kernel = [-1.0f32, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0];
-    let scale = 1.0;
-    let offset = 128.0;
-    scale_kernel(&mut kernel, scale, offset);
-    let filtered = img.filter3x3(&kernel);
-    filtered
-}
-
-pub fn smoothen(img: &DynamicImage) -> DynamicImage {
-    let mut kernel = [1.0f32, 1.0, 1.0, 1.0, 5.0, 1.0, 1.0, 1.0, 1.0];
-    let scale = 13.0;
+pub fn blur(img: &DynamicImage) -> DynamicImage {
+    let mut kernel = [1.0f32, 2.0, 1.0, 2.0, 4.0, 2.0, 1.0, 2.0, 1.0];
+    let scale = 16.0;
     let offset = 0.0;
     scale_kernel(&mut kernel, scale, offset);
-    let filtered = img.filter3x3(&kernel);
-    filtered
-}
-
-pub fn contour(img: &DynamicImage) -> DynamicImage {
-    let mut kernel = [-1.0f32, -1.0, -1.0, -1.0, 8.0, -1.0, -1.0, -1.0, -1.0];
-    let scale = 1.0;
-    let offset = 255.0;
-    scale_kernel(&mut kernel, scale, offset);
-    let filtered = img.filter3x3(&kernel);
+    let mut filtered = img.filter3x3(&kernel);
+    for x in 0..3 {
+        filtered = filtered.filter3x3(&kernel);
+    }
     filtered
 }
 

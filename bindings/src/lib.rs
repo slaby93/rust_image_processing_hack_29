@@ -114,3 +114,11 @@ pub fn add_watermark(
 
     img_to_base_64(&img)
 }
+
+#[wasm_bindgen]
+pub fn enhance_edges(img: String) -> String {
+    let mut img = base_64_to_img(&img);
+    img = image_processing::enhance_edges(&img);
+    img_to_base_64(&img)
+
+}
