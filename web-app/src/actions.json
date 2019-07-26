@@ -1,11 +1,29 @@
 {
+    "Watermark": {
+        "wasm_function_name": "add_watermark"
+    },
+    "Best fit": {
+        "wasm_function_name": "best_fit_resize"
+    },
+    "flip_horizontally": {
+        "wasm_function_name": "flip_horizontally"
+    },
+    "flip_vertically": {
+        "wasm_function_name": "flip_vertically"
+    },
     "grayscale": {
-        "wasm_function_name": "wasm_function"
+        "wasm_function_name": "grayscale"
     },
     "invert": {
-        "wasm_function_name": "wasm_function"
+        "wasm_function_name": "invert"
     },
-    "rescale": {
-        "wasm_function_name": "wasm_function"
+    "pixellate": {
+        "wasm_function_name": "pixellate"
+    },
+    "rotate_left": {
+        "wasm_function_name": "rotate_left"
+    },
+    "rotate_right": {
+        "wasm_function_name": "rotate_right"
     }
 }

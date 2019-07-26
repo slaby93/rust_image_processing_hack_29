@@ -6,6 +6,9 @@ import UploadImageForm from './components/UploadImageForm'
 import file_to_base64 from './utils/file_to_base64'
 import './App.css'
 
+const WEB_BASE64_PREFIX_PNG = "data:image/png;base64,";
+
+
 const App = ({ wasm }) => {
   const [ imageBase64, setImageBase64 ] = useState(null)
   const [ uploading, setUploading ] = useState(false)
@@ -18,9 +21,9 @@ const App = ({ wasm }) => {
   })
   const onImageTransform = useCallback(wasm_function_name => {
     setUploading(true)
-    // TODO: FINISH THIS
-    const newImage = wasm.load_image(imageBase64)
-    setImageBase64(newImage)
+    const base64 = imageBase64.split(WEB_BASE64_PREFIX_PNG)[1]
+    const newImage = wasm[wasm_function_name](base64)
+    setImageBase64(`${WEB_BASE64_PREFIX_PNG}${newImage}`)
     setUploading(false)
   })
 
