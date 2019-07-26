@@ -2,6 +2,7 @@ extern crate rand;
 
 use image::{DynamicImage, FilterType, GenericImageView, ImageBuffer, ImageRgba8, Pixel, Rgba};
 use rand::distributions::{Distribution, Normal};
+use std::f64;
 
 const PIXELLATE_SIZE: u32 = 8;
 
@@ -57,6 +58,46 @@ pub fn rotate_right(img: &DynamicImage) -> DynamicImage {
 pub fn rotate_left(img: &DynamicImage) -> DynamicImage {
     let filtered = img.rotate270();
     filtered
+}
+
+pub fn rotate(img: &DynamicImage, degrees: f64) -> DynamicImage {
+    if degrees > 90.0 || degrees < 0.0 {
+        panic!("rotate only supports degrees from 0 to 90!")
+    }
+
+    let radians = degrees * f64::consts::PI / 180.0;
+    let angle_cos = radians.cos();
+    let angle_sin = radians.sin();
+    
+    let (width, height) = img.dimensions();
+    let center_x = width as f64 / 2.0;
+    let center_y = height as f64 / 2.0;
+
+    // first, rotate the corners of the image to determine new image dimensions
+    // rotate bottom left corner (x)
+    let x_start = angle_cos * (-center_x) - angle_sin * (height as f64 - center_y) + center_x;
+    // rotate top right corner (x)
+    let x_end = angle_cos * (width as f64 - center_x) - angle_sin * (-center_y) + center_x;
+    // rotate top left corner (y)
+    let y_start = angle_sin * (-center_x) + angle_cos * (-center_y) + center_y;
+    // rotate bottom right corner (y)
+    let y_end = angle_sin * (width as f64 - center_x) + angle_cos * (height as f64 - center_y) + center_y;
+
+    // move the results by (x_start.abs(), y_start.abs()) so coordinates start at 0
+    let x_move = x_start.abs();
+    let y_move = y_start.abs();
+    let mut out = ImageBuffer::new((x_move + x_end).ceil() as u32, (y_move + y_end).ceil() as u32);
+
+    for y in 0..height {
+        for x in 0..width {
+            let p = img.get_pixel(x, y);
+            let new_x = x_move + angle_cos * (x as f64 - center_x) - angle_sin * (y as f64 - center_y) + center_x;
+            let new_y = y_move + angle_sin * (x as f64 - center_x) + angle_cos * (y as f64 - center_y) + center_y;
+            out.put_pixel(new_x.ceil() as u32, new_y.ceil() as u32, p);
+        }
+    }
+
+    ImageRgba8(out)
 }
 
 pub fn best_fit_resize(img: &DynamicImage, width: u32, height: u32) -> DynamicImage {

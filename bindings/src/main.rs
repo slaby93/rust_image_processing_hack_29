@@ -33,5 +33,7 @@ fn main() {
         .unwrap();
     image_processing::blur(&img)
         .save("outputs/blur.jpg")
+    image_processing::rotate(&img, 45.0)
+        .save("outputs/rotated.jpg")
         .unwrap();
 }
