@@ -12,7 +12,7 @@ use wasm_bindgen::prelude::*;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[wasm_bindgen]
-extern {
+extern "C" {
     fn alert(s: &str);
 }
 
@@ -24,12 +24,12 @@ pub fn load_image(image_base_64: &str) -> String {
     utils::set_panic_hook();
     let (image_base_64_clear, prefix, extension) = split_base64_prefix(image_base_64);
     let decoded_base64: Vec<u8> = base64::decode(image_base_64_clear).unwrap();
-    let image: image::DynamicImage = image::load_from_memory_with_format(&decoded_base64, extension)
-        .ok()
-        .expect("Opening image failed");
+    let image: image::DynamicImage =
+        image::load_from_memory_with_format(&decoded_base64, extension)
+            .ok()
+            .expect("Opening image failed");
 
     let grayscaled_image = image_processing::pixellate(&image);
-
 
     let mut buf = Vec::new();
 
@@ -42,11 +42,15 @@ pub fn load_image(image_base_64: &str) -> String {
 }
 
 pub fn split_base64_prefix(base64Image: &str) -> (&str, &str, image::ImageFormat) {
-    if(base64Image.contains(WEB_BASE64_PREFIX_PNG)) {
-        let base64 = base64Image.split(WEB_BASE64_PREFIX_PNG).collect::<Vec<&str>>()[1];
+    if (base64Image.contains(WEB_BASE64_PREFIX_PNG)) {
+        let base64 = base64Image
+            .split(WEB_BASE64_PREFIX_PNG)
+            .collect::<Vec<&str>>()[1];
         return (base64, WEB_BASE64_PREFIX_PNG, image::PNG);
     } else if (base64Image.contains(WEB_BASE64_PREFIX_JPEG)) {
-        let base64 = base64Image.split(WEB_BASE64_PREFIX_JPEG).collect::<Vec<&str>>()[1];
+        let base64 = base64Image
+            .split(WEB_BASE64_PREFIX_JPEG)
+            .collect::<Vec<&str>>()[1];
         return (base64, WEB_BASE64_PREFIX_JPEG, image::JPEG);
     } else {
         return ("", "", image::PNG);
@@ -55,16 +59,16 @@ pub fn split_base64_prefix(base64Image: &str) -> (&str, &str, image::ImageFormat
 
 fn base_64_to_img(image_base_64: &str) -> DynamicImage {
     let decoded_base64: Vec<u8> = base64::decode(image_base_64).unwrap();
-    let image: image::DynamicImage = image::load_from_memory_with_format(&decoded_base64, image::PNG)
-        .ok()
-        .expect("Opening image failed");
+    let image: image::DynamicImage =
+        image::load_from_memory_with_format(&decoded_base64, image::PNG)
+            .ok()
+            .expect("Opening image failed");
     image
 }
 
 fn img_to_base_64(img: &DynamicImage) -> String {
     let mut buf = Vec::new();
-    img
-        .write_to(&mut buf, image::ImageOutputFormat::PNG)
+    img.write_to(&mut buf, image::ImageOutputFormat::PNG)
         .expect("Unable to write");
 
     let encoded_base64 = base64::encode(&buf);
@@ -78,17 +82,13 @@ pub struct Image {
 
 #[wasm_bindgen]
 impl Image {
-
     pub fn set_image(&self, image_base_64: &str) -> Image {
         let img = base_64_to_img(image_base_64);
-        Image{
-            img,
-        }
+        Image { img }
     }
 
     pub fn flip_h(&mut self) -> String {
         self.img = image_processing::flip_horizontally(&self.img);
         img_to_base_64(&self.img)
     }
-
 }

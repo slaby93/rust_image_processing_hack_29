@@ -1,10 +1,9 @@
 extern crate rand;
 
-use rand::distributions::{Normal, Distribution};
-use image::{GenericImageView, DynamicImage, ImageBuffer, Rgba, ImageRgba8, FilterType};
+use image::{DynamicImage, FilterType, GenericImageView, ImageBuffer, ImageRgba8, Rgba};
+use rand::distributions::{Distribution, Normal};
 
 const PIXELLATE_SIZE: u32 = 8;
-
 
 pub fn flip_horizontally(img: &DynamicImage) -> DynamicImage {
     let filtered = img.fliph();
@@ -41,19 +40,16 @@ pub fn rotate_right(img: &DynamicImage) -> DynamicImage {
     filtered
 }
 
-
 pub fn rotate_left(img: &DynamicImage) -> DynamicImage {
     let filtered = img.rotate270();
     filtered
 }
-
 
 pub fn best_fit_resize(img: &DynamicImage, width: u32, height: u32) -> DynamicImage {
     // preserve the aspect ratio while scaling to the maximum possible size that fits within bounds specified by width and height.
     let filtered = img.resize(width, height, FilterType::Lanczos3);
     filtered
 }
-
 
 pub fn exact_resize(img: &DynamicImage, width: u32, height: u32) -> DynamicImage {
     let filtered = img.resize_exact(width, height, FilterType::Lanczos3);
@@ -63,7 +59,7 @@ pub fn exact_resize(img: &DynamicImage, width: u32, height: u32) -> DynamicImage
 pub fn add_watermark(
     original_img: &DynamicImage,
     watermark_img: &DynamicImage,
-    transparency: f32
+    transparency: f32,
 ) -> DynamicImage {
     // adds watermark in top left corner
     // original source image should be bigger than logo, otherwise it will crash
@@ -84,9 +80,9 @@ pub fn add_watermark(
                 let mut new_pixel = *img_buffer.get_pixel(x, y);
 
                 for channel in 0..3 {
-                    new_pixel[channel] = (
-                        (new_pixel[channel] as f32) * transparency + (watermark_pixel[channel] as f32) * (1.0 - transparency)
-                    ) as u8;
+                    new_pixel[channel] = ((new_pixel[channel] as f32) * transparency
+                        + (watermark_pixel[channel] as f32) * (1.0 - transparency))
+                        as u8;
                 }
 
                 img_buffer.put_pixel(x, y, new_pixel);
@@ -97,9 +93,7 @@ pub fn add_watermark(
 }
 
 pub fn detect_edges(img: &DynamicImage) -> DynamicImage {
-    let kernel = [-1.0f32, -1.0, -1.0,
-              -1.0, 8.0, -1.0,
-              -1.0, -1.0, -1.0];
+    let kernel = [-1.0f32, -1.0, -1.0, -1.0, 8.0, -1.0, -1.0, -1.0, -1.0];
     let filtered = img.filter3x3(&kernel);
     filtered
 }
