@@ -3,7 +3,7 @@ use std::fs;
 mod image_processing;
 
 fn main() {
-    let img = image::open("/Users/apau/Desktop/Klay_Patrick.jpg").unwrap();
+    let img = image::open("sample/fuji.jpg").unwrap();
     let watermark = image::open("sample/watermark.png").unwrap();
 
     fs::create_dir_all("outputs").unwrap();
@@ -33,6 +33,7 @@ fn main() {
         .unwrap();
     image_processing::blur(&img)
         .save("outputs/blur.jpg")
+        .unwrap();
     image_processing::rotate(&img, 45.0)
         .save("outputs/rotated.jpg")
         .unwrap();

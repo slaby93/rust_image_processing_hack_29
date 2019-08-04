@@ -65,13 +65,13 @@ pub fn rotate(img: &DynamicImage, degrees: f64) -> DynamicImage {
         panic!("rotate only supports degrees from 0 to 90!")
     }
 
-    let radians = degrees * f64::consts::PI / 180.0;
-    let angle_cos = radians.cos();
-    let angle_sin = radians.sin();
+    let mut radians = degrees * f64::consts::PI / 180.0;
+    let mut angle_cos = radians.cos();
+    let mut angle_sin = radians.sin();
     
     let (width, height) = img.dimensions();
-    let center_x = width as f64 / 2.0;
-    let center_y = height as f64 / 2.0;
+    let mut center_x = width as f64 / 2.0;
+    let mut center_y = height as f64 / 2.0;
 
     // first, rotate the corners of the image to determine new image dimensions
     // rotate bottom left corner (x)
@@ -86,14 +86,26 @@ pub fn rotate(img: &DynamicImage, degrees: f64) -> DynamicImage {
     // move the results by (x_start.abs(), y_start.abs()) so coordinates start at 0
     let x_move = x_start.abs();
     let y_move = y_start.abs();
-    let mut out = ImageBuffer::new((x_move + x_end).ceil() as u32, (y_move + y_end).ceil() as u32);
+    let new_width = (x_move + x_end).ceil() as u32;
+    let new_height = (y_move + y_end).ceil() as u32;
+    center_x = new_width as f64 / 2.0 - x_move;
+    center_y = new_height as f64 / 2.0 - y_move;
+    let mut out = ImageBuffer::new(new_width, new_height);
 
-    for y in 0..height {
-        for x in 0..width {
-            let p = img.get_pixel(x, y);
-            let new_x = x_move + angle_cos * (x as f64 - center_x) - angle_sin * (y as f64 - center_y) + center_x;
-            let new_y = y_move + angle_sin * (x as f64 - center_x) + angle_cos * (y as f64 - center_y) + center_y;
-            out.put_pixel(new_x.ceil() as u32, new_y.ceil() as u32, p);
+    // Iterate over all of the pixels in the destination image - we're doing this "backwards" so we make sure
+    // we set all of the pixels in the new image, as otherwise we might miss some (causing black dots in the
+    // destination image) due to rounding issues.
+    radians = (360.0 - degrees) * f64::consts::PI / 180.0;
+    angle_cos = radians.cos();
+    angle_sin = radians.sin();
+    for y in 0..new_height {
+        for x in 0..new_width {
+            let old_x = (angle_cos * (x as f64 - center_x - x_move) - angle_sin * (y as f64 - center_y - y_move) + center_x).round() as u32;
+            let old_y = (angle_sin * (x as f64 - center_x - x_move) + angle_cos * (y as f64 - center_y - y_move) + center_y).round() as u32;
+            if old_x < width && old_y < height {
+                let p = img.get_pixel(old_x, old_y);
+                out.put_pixel(x, y, p);
+            }
         }
     }
 
